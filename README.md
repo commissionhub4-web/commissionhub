@@ -268,8 +268,8 @@ Those fallback files explicitly build and start `CommissionHub_backend`.
 
 Railway build settings:
 
-- Build Command: leave blank, or use `cd CommissionHub_backend && pip install --no-cache-dir -r requirements.txt`
-- Start Command: `cd CommissionHub_backend && python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- Build Command: leave blank, or use `cd CommissionHub_backend && python -m venv .venv && .venv/bin/python -m pip install --upgrade pip setuptools wheel && .venv/bin/python -m pip install --no-cache-dir -r requirements.txt`
+- Start Command: `cd CommissionHub_backend && .venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 
 Do not set Build Command to `CommissionHub_backend/`; that is a folder path, not an executable command.
 
@@ -301,7 +301,7 @@ SMTP_FROM_EMAIL=your_gmail@gmail.com
 Railway start command:
 
 ```bash
-python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+cd CommissionHub_backend && .venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
 See `CommissionHub_backend/RAILWAY_DEPLOY.md` for the focused backend deployment checklist.
