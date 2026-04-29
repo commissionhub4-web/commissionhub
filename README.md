@@ -266,6 +266,13 @@ If Railway is configured from the monorepo root instead, this repository also in
 
 Those fallback files explicitly build and start `CommissionHub_backend`.
 
+Railway build settings:
+
+- Build Command: leave blank, or use `python -m pip install -r requirements.txt`
+- Start Command: `cd CommissionHub_backend && python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+
+Do not set Build Command to `CommissionHub_backend/`; that is a folder path, not an executable command.
+
 Included backend deploy files:
 
 - `railway.json`
