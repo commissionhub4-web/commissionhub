@@ -258,6 +258,14 @@ Deployment configuration files are intentionally stored inside each app folder s
 
 Use `CommissionHub_backend` as the Railway root directory.
 
+If Railway is configured from the monorepo root instead, this repository also includes root-level fallback files:
+
+- `railway.json`
+- `nixpacks.toml`
+- `Procfile`
+
+Those fallback files explicitly build and start `CommissionHub_backend`.
+
 Included backend deploy files:
 
 - `railway.json`
