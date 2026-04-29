@@ -50,6 +50,7 @@ uvicorn app.main:app --reload --port 8000
 API docs:
 
 - `http://localhost:8000/docs`
+- `http://localhost:8000/api/db-health`
 
 ## Gmail Password Reset Email Setup
 
@@ -72,6 +73,7 @@ For Gmail, use an **App Password** (not your normal Gmail password):
 ## Endpoints
 
 - `GET /api/health`
+- `GET /api/db-health`
 - `POST /api/auth/signup`
 - `POST /api/auth/login`
 - `POST /api/auth/send-reset-code`

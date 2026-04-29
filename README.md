@@ -215,6 +215,7 @@ uvicorn app.main:app --reload --port 8000
 Backend URLs:
 
 - API health: `http://localhost:8000/api/health`
+- Database health: `http://localhost:8000/api/db-health`
 - API docs: `http://localhost:8000/docs`
 - OpenAPI schema: `http://localhost:8000/openapi.json`
 
@@ -346,6 +347,7 @@ All API routes are prefixed with `/api`.
 ### Health
 
 - `GET /api/health`
+- `GET /api/db-health`
 
 ### Auth
 
@@ -408,6 +410,7 @@ All API routes are prefixed with `/api`.
 - Database tables are created automatically during backend startup.
 - Startup also applies lightweight compatibility changes for existing tables.
 - The backend healthcheck endpoint is `/api/health`.
+- The database checker endpoint is `/api/db-health`; it returns `503` with a safe masked database URL if PostgreSQL is unreachable.
 - The frontend is a single-page application, so `vercel.json` rewrites all routes to `index.html`.
 - Production CORS must include the exact Vercel app origin.
 - Vite environment variables must start with `VITE_` to be available in the browser.

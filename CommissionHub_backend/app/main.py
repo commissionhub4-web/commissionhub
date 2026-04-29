@@ -4,6 +4,7 @@ from collections import defaultdict
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 
 from .api import api_router
 from .config import settings
@@ -65,21 +66,29 @@ def _resolve_duplicate_employee_emails(connection) -> None:
 def on_startup() -> None:
     logger.info("App startup environment", extra={"app_env": settings.app_env})
     logger.info("SMTP configuration status", extra={"smtp": settings.smtp_debug_summary()})
-    Base.metadata.create_all(bind=engine)
-    with engine.begin() as connection:
-        connection.execute(text("ALTER TABLE projects ADD COLUMN IF NOT EXISTS client_name VARCHAR(200)"))
-        connection.execute(text("ALTER TABLE projects ADD COLUMN IF NOT EXISTS audit_notes TEXT"))
-        connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS bank_account_number VARCHAR(16)"))
-        connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS email VARCHAR(255)"))
-        connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS phone_number VARCHAR(11)"))
-        connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS audit_notes TEXT"))
-        connection.execute(text("ALTER TABLE commissions ADD COLUMN IF NOT EXISTS project_role VARCHAR(120)"))
-        connection.execute(text("UPDATE commissions SET project_role = COALESCE(NULLIF(project_role, ''), department, 'Night Shift')"))
-        connection.execute(text("ALTER TABLE commissions ALTER COLUMN project_role SET NOT NULL"))
-        connection.execute(text("ALTER TABLE employees ALTER COLUMN bank_account_number TYPE VARCHAR(16)"))
-        connection.execute(text("ALTER TABLE employees ALTER COLUMN phone_number TYPE VARCHAR(11)"))
-        _resolve_duplicate_employee_emails(connection)
-        connection.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS uq_employees_email_lower ON employees (LOWER(email)) WHERE email IS NOT NULL"))
+    app.state.db_ready = False
+    app.state.db_startup_error = None
+
+    try:
+        Base.metadata.create_all(bind=engine)
+        with engine.begin() as connection:
+            connection.execute(text("ALTER TABLE projects ADD COLUMN IF NOT EXISTS client_name VARCHAR(200)"))
+            connection.execute(text("ALTER TABLE projects ADD COLUMN IF NOT EXISTS audit_notes TEXT"))
+            connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS bank_account_number VARCHAR(16)"))
+            connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS email VARCHAR(255)"))
+            connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS phone_number VARCHAR(11)"))
+            connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS audit_notes TEXT"))
+            connection.execute(text("ALTER TABLE commissions ADD COLUMN IF NOT EXISTS project_role VARCHAR(120)"))
+            connection.execute(text("UPDATE commissions SET project_role = COALESCE(NULLIF(project_role, ''), department, 'Night Shift')"))
+            connection.execute(text("ALTER TABLE commissions ALTER COLUMN project_role SET NOT NULL"))
+            connection.execute(text("ALTER TABLE employees ALTER COLUMN bank_account_number TYPE VARCHAR(16)"))
+            connection.execute(text("ALTER TABLE employees ALTER COLUMN phone_number TYPE VARCHAR(11)"))
+            _resolve_duplicate_employee_emails(connection)
+            connection.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS uq_employees_email_lower ON employees (LOWER(email)) WHERE email IS NOT NULL"))
+        app.state.db_ready = True
+    except SQLAlchemyError as exc:
+        app.state.db_startup_error = str(exc)
+        logger.exception("Database startup initialization failed")
 
 
 app.include_router(api_router)
