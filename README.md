@@ -275,7 +275,7 @@ Required Railway variables:
 ```env
 APP_ENV=production
 DATABASE_URL=${{Postgres.DATABASE_URL}}
-CORS_ORIGINS=https://your-vercel-app.vercel.app
+CORS_ORIGINS=https://commissionhub-blue.vercel.app
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USERNAME=your_gmail@gmail.com
