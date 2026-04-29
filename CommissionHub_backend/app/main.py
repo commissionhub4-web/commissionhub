@@ -4,7 +4,6 @@ from collections import defaultdict
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
-from sqlalchemy.exc import SQLAlchemyError
 
 from .api import api_router
 from .config import settings
@@ -86,7 +85,7 @@ def on_startup() -> None:
             _resolve_duplicate_employee_emails(connection)
             connection.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS uq_employees_email_lower ON employees (LOWER(email)) WHERE email IS NOT NULL"))
         app.state.db_ready = True
-    except SQLAlchemyError as exc:
+    except Exception as exc:
         app.state.db_startup_error = str(exc)
         logger.exception("Database startup initialization failed")
 

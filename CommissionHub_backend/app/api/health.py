@@ -2,7 +2,6 @@ from fastapi import APIRouter, Request, status
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.engine import make_url
-from sqlalchemy.exc import SQLAlchemyError
 
 from ..config import settings
 from ..database import engine
@@ -37,7 +36,7 @@ def db_health(request: Request) -> JSONResponse:
                 "database_url": database_url,
             }
         )
-    except SQLAlchemyError as exc:
+    except Exception as exc:
         request.app.state.db_ready = False
         request.app.state.db_startup_error = str(exc)
         return JSONResponse(
