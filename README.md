@@ -286,7 +286,7 @@ SMTP_FROM_EMAIL=your_gmail@gmail.com
 Railway start command:
 
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port $PORT
+python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
 See `CommissionHub_backend/RAILWAY_DEPLOY.md` for the focused backend deployment checklist.

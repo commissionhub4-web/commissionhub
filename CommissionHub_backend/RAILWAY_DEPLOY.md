@@ -6,7 +6,7 @@ Deploy this backend from the `CommissionHub_backend` folder.
 
 - Root Directory: `CommissionHub_backend`
 - Build: Nixpacks
-- Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- Start Command: `python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 - Healthcheck Path: `/api/health`
 
 This folder also includes a `Dockerfile`, `.dockerignore`, `runtime.txt`, `.python-version`, `start.sh`, and `Procfile` for hosts that prefer those formats.
