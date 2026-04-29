@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 228 14% 7%;
+    --foreground: 210 20% 92%;
+
+    --app-shell-layer-1: radial-gradient(circle_at_20%_18%, rgba(59, 130, 246, 0.12), transparent 38%), radial-gradient(circle_at_82%_84%, rgba(20, 184, 166, 0.10), transparent 40%), linear-gradient(to bottom right, rgba(15, 23, 42, 0.72), rgba(2, 6, 23, 0.96));
+    --app-shell-layer-2: linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+    --app-shell-orb-1: 217 91% 60%;
+    --app-shell-orb-2: 188 95% 43%;
+    --auth-shell-layer-1: radial-gradient(circle_at_20%_15%, rgba(59, 130, 246, 0.16), transparent 40%), radial-gradient(circle_at_80%_80%, rgba(20, 184, 166, 0.14), transparent 40%), linear-gradient(to bottom right, rgba(15, 23, 42, 0.70), rgba(2, 6, 23, 0.95));
+    --auth-shell-layer-2: linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+    --auth-shell-orb-1: 217 91% 60%;
+    --auth-shell-orb-2: 188 95% 43%;
+
+    --card: 230 16% 11%;
+    --card-foreground: 210 20% 92%;
+
+    --popover: 230 18% 13%;
+    --popover-foreground: 210 20% 92%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 230 14% 18%;
+    --secondary-foreground: 210 20% 85%;
+
+    --muted: 230 12% 16%;
+    --muted-foreground: 215 15% 55%;
+
+    --accent: 230 14% 20%;
+    --accent-foreground: 210 20% 92%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 0%;
+
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+
+    --border: 230 12% 20%;
+    --input: 230 12% 20%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 230 18% 9%;
+    --sidebar-foreground: 210 20% 80%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 230 14% 15%;
+    --sidebar-accent-foreground: 210 20% 92%;
+    --sidebar-border: 230 12% 18%;
+    --sidebar-ring: 217 91% 60%;
+
+    --chart-1: 217 91% 60%;
+    --chart-2: 142 71% 45%;
+    --chart-3: 38 92% 50%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 0 72% 51%;
+  }
+
+  .light {
+    --background: 210 33% 97%;
+    --foreground: 222 47% 11%;
+
+    --app-shell-layer-1: radial-gradient(circle_at_20%_16%, rgba(59, 130, 246, 0.12), transparent 42%), radial-gradient(circle_at_82%_84%, rgba(14, 165, 233, 0.10), transparent 44%), linear-gradient(to bottom right, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.95));
+    --app-shell-layer-2: linear-gradient(rgba(148, 163, 184, 0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.20) 1px, transparent 1px);
+    --app-shell-orb-1: 217 91% 60%;
+    --app-shell-orb-2: 199 89% 48%;
+    --auth-shell-layer-1: radial-gradient(circle_at_20%_14%, rgba(59, 130, 246, 0.12), transparent 42%), radial-gradient(circle_at_80%_82%, rgba(14, 165, 233, 0.10), transparent 44%), linear-gradient(to bottom right, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.95));
+    --auth-shell-layer-2: linear-gradient(rgba(148, 163, 184, 0.24) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.20) 1px, transparent 1px);
+    --auth-shell-orb-1: 217 91% 60%;
+    --auth-shell-orb-2: 199 89% 48%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 26% 95%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 24% 93%;
+    --muted-foreground: 215 19% 39%;
+
+    --accent: 210 26% 94%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 71% 40%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 0%;
+
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+
+    --border: 214 24% 86%;
+    --input: 214 24% 86%;
+    --ring: 217 91% 60%;
+
+    --sidebar-background: 210 25% 96%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 24% 92%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 24% 86%;
+    --sidebar-ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-sm border border-border/50 rounded-lg;
+  }
+  .stat-value {
+    @apply text-2xl font-bold tracking-tight tabular-nums;
+  }
+  .mono-nums {
+    @apply font-mono tabular-nums;
+  }
+}
