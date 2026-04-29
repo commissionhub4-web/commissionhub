@@ -14,7 +14,7 @@ This folder also includes a `Dockerfile`, `.dockerignore`, `runtime.txt`, `.pyth
 
 If Railway is configured from the monorepo root instead of `CommissionHub_backend`, set:
 
-- Build Command: leave blank, or `python -m pip install -r requirements.txt`
+- Build Command: leave blank, or `cd CommissionHub_backend && pip install --no-cache-dir -r requirements.txt`
 - Start Command: `cd CommissionHub_backend && python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 
 Do not set Build Command to `CommissionHub_backend/`; Railway will try to execute that folder and fail with `Permission denied`.

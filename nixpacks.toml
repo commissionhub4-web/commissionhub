@@ -1,8 +1,8 @@
 [phases.setup]
-nixPkgs = ["python311"]
+nixPkgs = ["python311", "python311Packages.pip", "python311Packages.setuptools", "python311Packages.wheel"]
 
 [phases.install]
-cmds = ["cd CommissionHub_backend && python -m pip install --no-cache-dir -r requirements.txt"]
+cmds = ["cd CommissionHub_backend && pip install --no-cache-dir -r requirements.txt"]
 
 [start]
 cmd = "cd CommissionHub_backend && python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"
