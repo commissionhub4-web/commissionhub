@@ -1,4 +1,5 @@
 import logging
+import time
 from collections import defaultdict
 
 from fastapi import FastAPI
@@ -61,6 +62,43 @@ def _resolve_duplicate_employee_emails(connection) -> None:
             )
 
 
+def _run_database_startup_initialization() -> None:
+    Base.metadata.create_all(bind=engine)
+    with engine.begin() as connection:
+        connection.execute(text("ALTER TABLE projects ADD COLUMN IF NOT EXISTS client_name VARCHAR(200)"))
+        connection.execute(text("ALTER TABLE projects ADD COLUMN IF NOT EXISTS audit_notes TEXT"))
+        connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS bank_account_number VARCHAR(16)"))
+        connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS email VARCHAR(255)"))
+        connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS phone_number VARCHAR(11)"))
+        connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS audit_notes TEXT"))
+        connection.execute(text("ALTER TABLE commissions ADD COLUMN IF NOT EXISTS project_role VARCHAR(120)"))
+        connection.execute(text("UPDATE commissions SET project_role = COALESCE(NULLIF(project_role, ''), department, 'Night Shift')"))
+        connection.execute(text("ALTER TABLE commissions ALTER COLUMN project_role SET NOT NULL"))
+        connection.execute(text("ALTER TABLE employees ALTER COLUMN bank_account_number TYPE VARCHAR(16)"))
+        connection.execute(text("ALTER TABLE employees ALTER COLUMN phone_number TYPE VARCHAR(11)"))
+        _resolve_duplicate_employee_emails(connection)
+        connection.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS uq_employees_email_lower ON employees (LOWER(email)) WHERE email IS NOT NULL"))
+
+
+def _initialize_database_with_retries() -> None:
+    max_attempts = max(1, settings.database_startup_max_attempts)
+    retry_delay = max(0, settings.database_startup_retry_delay_seconds)
+
+    for attempt in range(1, max_attempts + 1):
+        try:
+            _run_database_startup_initialization()
+            return
+        except Exception:
+            if attempt >= max_attempts:
+                raise
+            logger.warning(
+                "Database startup initialization attempt failed; retrying",
+                exc_info=True,
+                extra={"attempt": attempt, "max_attempts": max_attempts, "retry_delay_seconds": retry_delay},
+            )
+            time.sleep(retry_delay)
+
+
 @app.on_event("startup")
 def on_startup() -> None:
     logger.info("App startup environment", extra={"app_env": settings.app_env})
@@ -69,25 +107,12 @@ def on_startup() -> None:
     app.state.db_startup_error = None
 
     try:
-        Base.metadata.create_all(bind=engine)
-        with engine.begin() as connection:
-            connection.execute(text("ALTER TABLE projects ADD COLUMN IF NOT EXISTS client_name VARCHAR(200)"))
-            connection.execute(text("ALTER TABLE projects ADD COLUMN IF NOT EXISTS audit_notes TEXT"))
-            connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS bank_account_number VARCHAR(16)"))
-            connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS email VARCHAR(255)"))
-            connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS phone_number VARCHAR(11)"))
-            connection.execute(text("ALTER TABLE employees ADD COLUMN IF NOT EXISTS audit_notes TEXT"))
-            connection.execute(text("ALTER TABLE commissions ADD COLUMN IF NOT EXISTS project_role VARCHAR(120)"))
-            connection.execute(text("UPDATE commissions SET project_role = COALESCE(NULLIF(project_role, ''), department, 'Night Shift')"))
-            connection.execute(text("ALTER TABLE commissions ALTER COLUMN project_role SET NOT NULL"))
-            connection.execute(text("ALTER TABLE employees ALTER COLUMN bank_account_number TYPE VARCHAR(16)"))
-            connection.execute(text("ALTER TABLE employees ALTER COLUMN phone_number TYPE VARCHAR(11)"))
-            _resolve_duplicate_employee_emails(connection)
-            connection.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS uq_employees_email_lower ON employees (LOWER(email)) WHERE email IS NOT NULL"))
+        _initialize_database_with_retries()
         app.state.db_ready = True
     except Exception as exc:
         app.state.db_startup_error = str(exc)
         logger.exception("Database startup initialization failed")
+        raise
 
 
 app.include_router(api_router)

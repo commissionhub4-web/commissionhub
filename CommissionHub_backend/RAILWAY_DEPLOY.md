@@ -8,7 +8,7 @@ Deploy this backend from the `CommissionHub_backend` folder.
 - Build: Nixpacks
 - Build Command: leave blank
 - Start Command: `.venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-- Healthcheck Path: `/api/health`
+- Healthcheck Path: `/api/db-health`
 
 This folder also includes a `Dockerfile`, `.dockerignore`, `runtime.txt`, `.python-version`, `start.sh`, and `Procfile` for hosts that prefer those formats.
 
@@ -26,6 +26,8 @@ Set these in Railway:
 ```env
 APP_ENV=production
 DATABASE_URL=${{Postgres.DATABASE_URL}}
+DATABASE_STARTUP_MAX_ATTEMPTS=6
+DATABASE_STARTUP_RETRY_DELAY_SECONDS=2
 CORS_ORIGINS=https://commissionhub-blue.vercel.app
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587

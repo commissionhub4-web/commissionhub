@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     smtp_username: str = ""
     smtp_password: str = ""
     smtp_from_email: str = ""
+    database_startup_max_attempts: int = 6
+    database_startup_retry_delay_seconds: float = 2.0
 
     model_config = SettingsConfigDict(
         env_file=(str(BACKEND_DIR / ".env"), str(WORKSPACE_DIR / ".env")),

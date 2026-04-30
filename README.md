@@ -152,6 +152,8 @@ Create `CommissionHub_backend/.env` from `CommissionHub_backend/.env.example`.
 APP_NAME=CommissionHub API
 APP_ENV=development
 DATABASE_URL=postgresql+psycopg://postgres:postgres@localhost:5432/commissionhub
+DATABASE_STARTUP_MAX_ATTEMPTS=6
+DATABASE_STARTUP_RETRY_DELAY_SECONDS=2
 CORS_ORIGINS=http://localhost:5173,http://localhost:8080
 
 SMTP_HOST=smtp.gmail.com
@@ -291,6 +293,8 @@ Required Railway variables:
 ```env
 APP_ENV=production
 DATABASE_URL=${{Postgres.DATABASE_URL}}
+DATABASE_STARTUP_MAX_ATTEMPTS=6
+DATABASE_STARTUP_RETRY_DELAY_SECONDS=2
 CORS_ORIGINS=https://commissionhub-blue.vercel.app
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
@@ -409,8 +413,8 @@ All API routes are prefixed with `/api`.
 
 - Database tables are created automatically during backend startup.
 - Startup also applies lightweight compatibility changes for existing tables.
-- The backend healthcheck endpoint is `/api/health`.
-- The database checker endpoint is `/api/db-health`; it returns `503` with a safe masked database URL if PostgreSQL is unreachable.
+- The backend readiness endpoint is `/api/health`; it returns `503` if startup database initialization did not complete.
+- The Railway healthcheck endpoint should be `/api/db-health`; it returns `503` with a safe masked database URL if PostgreSQL is unreachable.
 - The frontend is a single-page application, so `vercel.json` rewrites all routes to `index.html`.
 - Production CORS must include the exact Vercel app origin.
 - Vite environment variables must start with `VITE_` to be available in the browser.
@@ -423,7 +427,7 @@ All API routes are prefixed with `/api`.
 Check:
 
 - `VITE_API_BASE_URL` points to the backend URL and ends with `/api`.
-- Railway backend is deployed and `/api/health` returns `{"ok": true}`.
+- Railway backend is deployed and `/api/db-health` returns `{"ok": true}`.
 - Backend `CORS_ORIGINS` includes the exact frontend origin.
 
 ### Railway deploy starts but database fails

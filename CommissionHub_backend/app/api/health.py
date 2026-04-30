@@ -11,8 +11,19 @@ router = APIRouter()
 
 
 @router.get("/health")
-def health() -> dict[str, bool]:
-    return {"ok": True}
+def health(request: Request) -> JSONResponse:
+    database_ready = bool(getattr(request.app.state, "db_ready", False))
+    if database_ready:
+        return JSONResponse({"ok": True, "database": "ready"})
+
+    return JSONResponse(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        content={
+            "ok": False,
+            "database": "not_ready",
+            "error": getattr(request.app.state, "db_startup_error", "Database startup has not completed."),
+        },
+    )
 
 
 @router.get("/db-health")
