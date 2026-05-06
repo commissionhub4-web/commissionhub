@@ -17,7 +17,7 @@ This folder also includes `.nvmrc`, `.node-version`, `.npmrc`, `.vercelignore`, 
 Set this in Vercel:
 
 ```env
-VITE_API_BASE_URL=https://your-railway-backend.up.railway.app/api
+VITE_API_BASE_URL=https://commissionhub-production.up.railway.app/api
 ```
 
-Replace the value with your real Railway backend URL after Railway deploys.
+Keep the backend `CORS_ORIGINS` set to your frontend origin: `https://commissionhub-blue.vercel.app`.

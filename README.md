@@ -180,7 +180,7 @@ VITE_API_BASE_URL=http://localhost:8000/api
 For production on Vercel:
 
 ```env
-VITE_API_BASE_URL=https://your-railway-backend.up.railway.app/api
+VITE_API_BASE_URL=https://commissionhub-production.up.railway.app/api
 ```
 
 ## Local Development
@@ -330,7 +330,7 @@ Included frontend deploy files:
 Required Vercel variable:
 
 ```env
-VITE_API_BASE_URL=https://your-railway-backend.up.railway.app/api
+VITE_API_BASE_URL=https://commissionhub-production.up.railway.app/api
 ```
 
 Vercel build settings:
