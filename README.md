@@ -57,7 +57,7 @@ Vercel Frontend
   v
 Railway FastAPI Backend
   |
-  | DATABASE_URL
+  | DATABASE_PUBLIC_URL
   v
 PostgreSQL
 ```
@@ -151,7 +151,7 @@ Create `CommissionHub_backend/.env` from `CommissionHub_backend/.env.example`.
 ```env
 APP_NAME=CommissionHub API
 APP_ENV=development
-DATABASE_URL=postgresql+psycopg://postgres:postgres@localhost:5432/commissionhub
+DATABASE_PUBLIC_URL=postgresql+psycopg://postgres:postgres@localhost:5432/commissionhub
 DATABASE_STARTUP_MAX_ATTEMPTS=6
 DATABASE_STARTUP_RETRY_DELAY_SECONDS=2
 CORS_ORIGINS=http://localhost:5173,http://localhost:8080
@@ -165,7 +165,7 @@ SMTP_FROM_EMAIL=your_gmail@gmail.com
 
 Notes:
 
-- `DATABASE_URL` can use `postgresql+psycopg://`, `postgresql://`, or Railway's standard Postgres URL format.
+- `DATABASE_PUBLIC_URL` can use `postgresql+psycopg://`, `postgresql://`, or Railway's standard public Postgres URL format.
 - `CORS_ORIGINS` is a comma-separated list of allowed frontend origins.
 - Gmail SMTP requires an app password, not the normal account password.
 
@@ -292,7 +292,7 @@ Required Railway variables:
 
 ```env
 APP_ENV=production
-DATABASE_URL=${{Postgres.DATABASE_URL}}
+DATABASE_PUBLIC_URL=${{Postgres.DATABASE_PUBLIC_URL}}
 DATABASE_STARTUP_MAX_ATTEMPTS=6
 DATABASE_STARTUP_RETRY_DELAY_SECONDS=2
 CORS_ORIGINS=https://commissionhub-blue.vercel.app
@@ -435,7 +435,7 @@ Check:
 Check:
 
 - A Railway PostgreSQL service is attached.
-- `DATABASE_URL` is set in the backend service.
+- `DATABASE_PUBLIC_URL` is set in the backend service.
 - The backend service root directory is `CommissionHub_backend`.
 
 ### Password reset email does not send

@@ -25,7 +25,7 @@ Set these in Railway:
 
 ```env
 APP_ENV=production
-DATABASE_URL=${{Postgres.DATABASE_URL}}
+DATABASE_PUBLIC_URL=${{Postgres.DATABASE_PUBLIC_URL}}
 DATABASE_STARTUP_MAX_ATTEMPTS=6
 DATABASE_STARTUP_RETRY_DELAY_SECONDS=2
 CORS_ORIGINS=https://commissionhub-blue.vercel.app

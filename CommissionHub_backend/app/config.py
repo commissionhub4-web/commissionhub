@@ -10,7 +10,7 @@ WORKSPACE_DIR = BACKEND_DIR.parent
 class Settings(BaseSettings):
     app_name: str = "CommissionHub API"
     app_env: str = "development"
-    database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/commissionhub"
+    database_public_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/commissionhub"
     cors_origins: str = "http://localhost:5173,http://localhost:8080"
     smtp_host: str = "smtp.gmail.com"
     smtp_port: int = 587
@@ -32,7 +32,7 @@ class Settings(BaseSettings):
 
     @property
     def sqlalchemy_database_url(self) -> str:
-        database_url = self.database_url.strip()
+        database_url = self.database_public_url.strip()
         if not database_url:
             return "postgresql+psycopg://postgres:postgres@localhost:5432/commissionhub"
         if database_url.startswith("postgres://"):
