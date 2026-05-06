@@ -541,12 +541,6 @@ export default function Login() {
                                                 {isSignUp ? "Sign in" : "Sign up"}
                                             </button>
                                         </p>
-
-                                        {!isSignUp && (
-                                            <p className="text-xs text-muted-foreground/60">
-                                                Admin: admin@commissionpro.com / admin123
-                                            </p>
-                                        )}
                                     </>
                                 )}
                             </CardFooter>
